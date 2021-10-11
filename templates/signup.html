@@ -1,0 +1,50 @@
+{% extends 'mainlayout.html' %}
+{% block title %} Sign up {% endblock title %}
+
+{% block body %} 
+
+<div class="container">
+    <form class="form-signin" action="/signup" method="post">
+        {% csrf_token %}
+        <div style="margin-left: 321px;">
+            <h1 class="h3 mb-1 my-4 font-weight-normal">Please sign up</h1>
+            <div class="mb-3">
+            <label for="firstname">𝗙𝗶𝗿𝘀𝘁 𝗻𝗮𝗺𝗲</label>
+            <input type="text" id="firstname" name="firstname" style="width: 400px; padding:3px;" class="form-control" placeholder="" required autofocus>
+            </div>
+
+            <div class="mb-3">
+            <label for="lastname">𝗟𝗮𝘀𝘁 𝗻𝗮𝗺𝗲</label>
+            <input type="text" id="lastname" name="lastname"style="width: 400px; padding:3px;"  class="form-control" placeholder="" required autofocus>
+            </div>
+
+
+            <div class="mb-3">
+            <label for="username">𝗨𝘀𝗲𝗿𝗻𝗮𝗺𝗲</label>
+            <input type="text" id="username"  name="username"style="width: 400px; padding:3px;" class="form-control" placeholder="" required>
+            </div>
+
+
+            <div class="mb-3">
+            <label for="email">𝗘𝗺𝗮𝗶𝗹(𝗲.𝗴. 𝗻𝗮𝗺𝗲@𝗴𝗺𝗮𝗶𝗹.𝗰𝗼𝗺)</label>
+            <input type="text" id="email" name="email" style="width: 400px; padding:3px;" class="form-control" placeholder="Email" required>
+            </div>
+
+
+            <div class="mb-3">
+            <label for="password">𝗣𝗮𝘀𝘀𝘄𝗼𝗿𝗱</label>
+            <input type="password" id="password" name="password" style="width: 400px; padding:3px;" class="form-control" placeholder="" required>
+            </div>
+
+            <div class="mb-3">
+            <label for="conform_password">𝗖𝗼𝗻𝗳𝗼𝗿𝗺 𝗽𝗮𝘀𝘀𝘄𝗼𝗿𝗱</label>
+            <input type="password" id="conform_password" name="conform_password" style="width: 400px; padding:3px;" class="form-control" placeholder="" required>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block my-1 mb-4" type="submit" style="font-size:15px;">Sign up</button>
+            <a href="/login_user" style="margin-left:5px">Already hava an account?</a>
+        </div>
+    </form>
+</div>
+
+{% endblock body %}

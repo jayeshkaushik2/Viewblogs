@@ -1,0 +1,29 @@
+{% extends 'mainlayout.html' %}
+{% block title %} Viewblogs | Home {% endblock title %}
+
+{% block body %}
+
+<div class="container" style="margin-top: 12px;">
+  <div class="row">
+    
+    {% for blog in blogs %}
+    <div class="col-md-4">
+      <div className="my-2">
+        <div class="card" style="width: 18rem;">
+          <img src="/media/{{blog.blog_image}}" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{blog.title}}</h5>
+            <p class="card-text">
+              {{blog.description}}
+            </p>
+            <p>Category: {{blog.category}}</p>
+            <a href="/readmore?={{blog.title}}" class="btn btn-sm btn-primary">Read more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock body %}

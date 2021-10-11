@@ -1,0 +1,37 @@
+{% extends 'mainlayout.html' %}
+{% block title %} Contact me {% endblock title %}
+
+{% block body %} 
+
+    <h1 class="text-center">Contact me</h1>
+
+    <div class="container mb-5">
+        <form method="post" action="/contact">
+            {% csrf_token %} 
+
+            <div class="form-floating mb-3 my-4">
+            <input type="name" class="form-control" id="floatingname" name="name" placeholder="Name">
+            <label for="floatingname">Your Name</label>
+            </div>
+
+            <div class="form-floating mb-3 my-4">
+            <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
+            <label for="floatingInput">Your Email address</label>
+            </div>
+
+            <div class="form-floating mb-3 my-4">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+            <label for="floatingPassword">Your Password</label>
+            </div>
+
+            <div class="form-floating mb-3 my-8">
+            <textarea class="form-control" placeholder="Leave a Massage here" name="massage" id="floatingTextarea"></textarea>
+            <label for="floatingTextarea">Massage</label>
+            </div>
+
+            <button class="btn btn-primary" type="Submit">Submit</button>
+        </form>
+    </div>
+
+
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% extends 'mainlayout.html' %}
+{% block title %} addPost {% endblock title %}
+
+{% block body %}
+
+<div class="container">
+    <div class="container">
+        <div class="container mb-5">
+            <form method="post" action="/addpost">
+                {% csrf_token %} 
+                <div class="form-floating mb-3 my-4">
+                <input type="title" class="form-control" id="title" name="title" placeholder="Title">
+                <label for="title">Title</label>
+                </div>
+    
+                <div class="form-floating mb-3 my-4">
+                    <div class="mb-3">
+                        <label for="post_image" class="form-label">Upload image</label>
+                        <input class="form-control form-control-sm" name="post_image" id="post_image" type="file">
+                    </div>
+                </div>
+    
+    
+                <button class="btn btn-primary" type="Submit">Add</button>
+            </form>
+        </div>
+    
+    </div>
+</div>
+
+
+{% endblock body %}

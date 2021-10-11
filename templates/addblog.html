@@ -1,0 +1,46 @@
+{% extends 'mainlayout.html' %}
+{% block title %} Viewblogs | Add blog {% endblock title %}
+
+{% block body %} 
+<div class="container">
+    <div class="container mb-5">
+        <form method="post" action="/addblog">
+            {% csrf_token %} 
+
+            <div class="form-floating mb-3 my-4">
+                <div class="mb-3">
+                    <label for="blog_image" class="form-label">Upload image</label>
+                    <input class="form-control form-control-sm" name="blog_image" id="blog_image" type="file">
+                </div>
+            </div>
+
+            <select class="form-select" name="category" aria-label="Default select example">
+                <option selected>Select Category</option>
+                <hr>
+                <option value="science">Science</option>
+                <option value="sports">Sports</option>
+                <option value="thoughts">Thoughts</option>
+                <option value="buisness">Buisness</option>
+                <option value="general">General</option>
+                <option value="developer">Developers</option>
+                <option value="coding">Coding</option>
+                <option value="others">others</option>
+
+              </select>
+
+            <div class="form-floating mb-3 my-4">
+            <input type="title" class="form-control" id="title" name="title" placeholder="Title">
+            <label for="title">Title</label>
+            </div>
+
+            <div class="form-floating mb-3 my-8">
+            <textarea class="form-control" placeholder="Description" name="description" id="description"></textarea>
+            <label for="description">Description</label>
+            </div>
+
+            <button class="btn btn-primary" type="Submit">Add</button>
+        </form>
+    </div>
+
+</div>
+{% endblock body %}
