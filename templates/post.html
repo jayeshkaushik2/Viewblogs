@@ -2,28 +2,49 @@
 {% block title %} Jayesh {% endblock title %}
 
 {% block body %}
-<div class="container" style="margin-top: 12px; ">
+<div class="container" style="margin-top: 70px; ">
     {% for post in posts %}
-    <div class="container bg-light border" style="background-color: rgb(232, 232, 232); min-width: 45%; max-width: 60%; height: 50%; border-radius: 6px; padding-top: 5px; padding-bottom: 5px; padding-left: 1px; padding-right: 1px; max-height: 100%; float: left; margin-bottom: 5px;">
+    <div class="container bg-light border"
+        style="background-color: rgb(232, 232, 232); min-width: 45%; max-width: 60%; height: 50%; border-radius: 6px; padding-top: 5px; padding-bottom: 5px; padding-left: 1px; padding-right: 1px; max-height: 100%; float: left; margin-bottom: 5px;">
         <div class="container">
-            <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%;" data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30"
+                style="border-radius: 50%;" data-view-component="true" class="avatar dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false">
             <a href="" class="link-dark">{{post.user}}</a>
-            <p class="status" name="status", id="status" style="font-size: 11px; margin-top: 5px;">{{post.title}}</p>
+            <p class="status" name="status" , id="status" style="font-size: 11px; margin-top: 5px;">{{post.title}}</p>
         </div>
         <div class="postimage">
-            <img src="/media/{{post.post_image}}" alt="postimage" id="postimage" style="display: block; position: inherit; width: 100%; height: 100%; max-width: 700px; max-height: 700px; margin-top: 15px; margin-left: auto; margin-right: auto;">
+            <img src="/media/{{post.post_img}}" alt="postimage" id="postimage"
+            style="display: block; position: inherit; width: 100%; height: 100%; max-width: 700px; max-height: fit-content; margin-top: 15px; margin-left: auto; margin-right: auto;">
         </div>
         <hr style="margin-top: 0px;">
-        <div class="btnfooter" style="margin-top: -4px; height: 35px; padding: 5px; margin-bottom: 5px; text-align: center;">
-            <img role="button" src="/static/img/like.svg" style="width: 10%; height: 100%; " alt="likesvg"> <p style="display: inline; font-size: 12px; font-size: 12px; margin-left: -2%; margin-right: 6%;">Likes {{post.likes}}</p>
+        <form action="{% url 'like_pressed'  %}" method="post">
+            {% csrf_token %}
+            <div class="btnfooter" style="margin-top: -4px; height: 35px; padding: 5px; margin-bottom: 5px; text-align: center;">
+                <button class="btn btn-sm" value="{{post.id}}" name="post_id" type="submit" style="width: 15%; padding: 0px; margin-right: 40px;">
+                <img role="button"  src="/static/img/like.svg" style="width: 25%; height: 100%; " alt="likesvg">
+                Likes {{post.total_likes}}
+                </button>
 
-            <img role="button" src="/static/img/comment.svg" style="width: 10%; height: 100%; " alt="commentsvg"> <p style="display: inline; font-size: 12px; font-size: 12px; margin-left: -2%; margin-right: 6%;">Comment</p>
+                <button class="btn btn-sm" value="{{post.id}}" name="post_comments" type="submit" style="width: 15%; padding: 0px; margin-right: 40px;">
+                <img role="button" src="/static/img/comment.svg" style="width: 25%; height: 100%; " alt="commentsvg">
+                Comments
+                </button>
 
-            <img role="button" src="/static/img/share.svg" style="width: 10%; height: 100%; " alt="sharesvg"> <p style="display: inline; font-size: 12px; font-size: 12px; margin-left: -2%; margin-right: 6%;">Share</p>
+                <button class="btn btn-sm" value="{{post.id}}" name="post_share" type="submit" style="width: 15%; padding: 0px; margin-right: 40px;">
+                <img role="button" src="/static/img/share.svg" style="width: 25%; height: 100%; " alt="sharesvg">
+                Share
+                </button>
 
-            <img role="button" src="/static/img/send.svg" style="width: 10%; height: 100%; " alt="sendsvg"> <p style="display: inline; font-size: 12px; font-size: 12px; margin-left: -2%; margin-right: 6%;">Send</p>
+
+                <button class="btn btn-sm" value="{{post.id}}" name="post_send" type="submit" style="width: 15%; padding: 0px; ">
+                <img role="button" src="/static/img/send.svg" style="width: 25%; height: 100%; " alt="sendsvg">
+                Send
+                </button>
+
+            </div>
+        </form>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% endblock body %}

@@ -15,5 +15,7 @@ urlpatterns = [
     path('addblog', views.addblog, name='addblog'),
     path('addpost', views.addpost, name='addpost'),
     path('post', views.post, name='post'),
-    path('chat', views.chat, name='chat')
+    path('like_pressed', views.like_pressed, name='like_pressed'),
+    path('chat', views.chat, name='chat'),
+    path('editprofile', views.editprofile, name='editprofile'),
 ]

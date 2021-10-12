@@ -14,7 +14,7 @@
 
 <body>
     <!-- nav bar is here -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: block; position: fixed; width: 100%;">
         <div class="container-fluid">
             <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
             <a class="navbar-brand" href="#">Viewblogs</a>
@@ -31,23 +31,27 @@
                         <a class="nav-link" href="/post">Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="/login_user">Login</a>
                     </li>
                 </ul>
             </div>
 
             <div class="btn-group dropstart">
-                <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%;" data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if request.user.is_authenticated %}
 
+                <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%;" data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            
                 <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" style="background: none; color: grey; width: 10px; height: 29px; padding: 0px; border: none;" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <!-- if user is logged in then show the name else some login button below -->
-                    <li><a class="dropdown-item" href="/userprofile?=jayesh">Jayesh</a></li>
-                    <li><a class="dropdown-item" href="/chat">Chats</a></li>
+                    <li><a class="dropdown-item" href="/userprofile?={{request.user.username}}">{{request.user.username}}</a></li>
+                    <li><a class="dropdown-item" href="/chat">Messages</a></li>
                     <li><a class="dropdown-item" href="/contact">contact us</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/logout_user" style="color: red;">Logout</a></li>
                 </ul>
+
+            {% endif %}
             </div>
     </nav>
 

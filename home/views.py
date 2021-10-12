@@ -1,16 +1,16 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout
 from home.models import *
 from datetime import datetime
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
-        blogs = Blog.objects.all()
-        for blog in blogs:
-            print(blog.title)
-            print(blog.description, blog.blog_image, blog.category)
+        blogs = Blog.objects.all()           
         return render(request, 'home.html', {'blogs':blogs})
     else:
         return render(request, 'login_user.html')
@@ -98,14 +98,15 @@ def logout_user(request):
 def userprofile(request):
     if request.user.is_authenticated:
         # username, about, followers, following, linkedurl, blogs uploaded by user, and posts uploaded by user
-        user_name = request.user.username
-        print(user_name)
         user_id = request.user.id
-        print('user id>>',user_id)
+        # posts uploaded by this user will come from this model
         posts = Post.objects.filter(user=user_id)
-        return render(request, 'userprofile.html', {'posts':posts})
+        # about, userimages, followers will come from this model
+        user_profile = User_profile.objects.filter(user=user_id)[0]
+        user_blogs = Blog.objects.filter(user=user_id)
+        return render(request, 'userprofile.html', {'posts':posts, 'user_profile':user_profile, 'blog':user_blogs})
     else:
-        return render(request, 'login_user.html')
+        return redirect('/login_user')
 
 def readmore(request):
     return render(request, 'readmore.html')
@@ -116,9 +117,9 @@ def addblog(request):
         title = request.POST.get('title')
         category = request.POST.get('category')
         description = request.POST.get('description')
-        blog__image = 'blogimages/'+ request.POST.get('blog_image')
+        blog__image = request.FILES['blog_image']
         print(blog__image)
-        blog = Blog(user=user, title=title, category=category, blog_image=blog__image, description=description)
+        blog = Blog(user=user, title=title, category=category, blog_img=blog__image, description=description)
         blog.save()
         return redirect('/')
 
@@ -128,18 +129,29 @@ def addpost(request):
     if request.method == 'POST':
         user = request.user
         title = request.POST.get('title')
-        post_image = 'postimages/'+str(request.POST.get('post_image'))
-        post = Post(user=user, title=title, post_image=post_image)
+        post_image = request.FILES['post_image']
+        print(post_image)
+        post = Post(user=user, title=title, post_img=post_image)
         post.save()
         return redirect('/post')
+        
 
     return render(request, 'addpost.html')
 
+def like_pressed(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    print('btn pressed liked!', post)
+    return HttpResponseRedirect(reverse('post'))
+
 def post(request):
-    posts = Post.objects.all()
-    for post in posts:
-        print('this is >>',post.post_image)
-    return render(request, 'post.html', {'posts':posts})
+    if request.user.is_authenticated:
+        posts = Post.objects.all()
+        return render(request, 'post.html', {'posts':posts})
+    return redirect('/login_user')
 
 def chat(request):
     return render(request, 'chat.html')
+
+def editprofile(request):
+    return render(request, 'editprofile.html')

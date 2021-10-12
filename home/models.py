@@ -14,23 +14,30 @@ class Contact(models.Model):
         return self.name
 
 
-# class User_profile(models.Model):
-#     user = models.OneToOneField(User)
-#     about = models.CharField(max_length=10000000)
-#     following = models.ManyToManyField(User, related_name='following', blank=True)
+class User_profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    about = models.CharField(max_length=10000000)
+    user_image = models.ImageField(upload_to='userimages', default="", null=True)
+    followers = models.ManyToManyField(User, related_name='followers', blank=True)
     
-#     def __str__(self):
-#         return str(self.user.username)
+    def __str__(self):
+        return str(self.user.username)
+    
+    def total_followers(self):
+        return self.followers.count()
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=10000)
-    post_image = models.ImageField(upload_to='postimages')
-    likes = models.ManyToManyField(User, related_name='posts')
+    post_img = models.ImageField(upload_to='postsimages')
+    likes = models.ManyToManyField(User, related_name='likes')
+
+    def total_likes(self):
+        return self.likes.count()
 
 class Blog(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100000)
     category = models.CharField(max_length=1000)
-    blog_image = models.ImageField(upload_to='blogimages')
+    blog_img = models.ImageField(upload_to='blogimages')
     description = models.CharField(max_length=1000000)

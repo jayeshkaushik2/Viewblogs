@@ -3,14 +3,14 @@
 
 {% block body %}
 
-<div class="container" style="margin-top: 12px;">
+<div class="container" style="margin-top: 70px;">
   <div class="row">
     
     {% for blog in blogs %}
     <div class="col-md-4">
       <div className="my-2">
         <div class="card" style="width: 18rem;">
-          <img src="/media/{{blog.blog_image}}" class="card-img-top" alt="..." />
+          <img src="/media/{{blog.blog_img}}" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title">{{blog.title}}</h5>
             <p class="card-text">
