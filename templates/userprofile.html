@@ -1,17 +1,43 @@
 {% extends 'mainlayout.html' %}
-{% block title %} {{request.user.username}} {% endblock title %}
+{% block title %} {{user.username}} {% endblock title %}
 
 {% block body %}
 
-<div class="container" style="float: left; display: flex; margin-top: 70px;">
-  <div class="sidebar">
-    <img style="height:auto;" alt="userprofile" width="260" height="260" class="avatar avatar-user"
-      style="border-radius: 3%;" src="/static/img/profileimg.jpg">
+<!--  margin-top: 70px; -->
+<style>
+.hide {
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  transform: translate(-50%, -50%);
+}
+
+#postimage:hover{
+  visibility: visible;
+  backdrop-filter: blur(10px);
+  filter: blur(3px);
+  transition: 0.5s ease;
+  border: 1px solid;
+}
+</style>
+
+<div class="container" style="float: left; display: flex;">
+  <div class="sidebar" style="width: 35%; margin-top: 10px; border-right: 1px solid #cfcfcf;">
+    {% if user_profile.user_image %}
+    <img style="height:auto;" alt="userprofile" width="260" height="260" class="avatar avatar-user" style="border-radius: 3%;" src="/media/{{user_profile.user_image}}">
+    {% else %}
+    <img style="height:auto;" alt="userprofile" width="260" height="260" class="avatar avatar-user" style="border-radius: 3%;" src="/static/img/default.jpg">
+    {% endif %}
 
     <div class="content my-2">
-      <h4>{{request.user.username}}</h4>
-      <h5 style="font-size: 13px;">{{user_profile.about}}</h5>
+      <h4>{{user.username}}</h4>
+      <h5 style="font-size: 13px; width: 84%;">{{user_profile.about}}</h5>
+      {% if request.user.id == user.id %}
       <a type="button" class="btn btn-outline-secondary btn-sm" href="/editprofile" style="width: 260px;">Edit profile</a>
+      {% else %}
+      {% endif %}
 
       <div class="my-2">
         <p>
@@ -19,61 +45,103 @@
             class="link-secondary" style="font-size: 14px;" href="#">{{ user_profile.total_followers}} follower</a> . <a class="link-secondary"
             style="font-size: 14px;" href="">4 following</a>
         </p>
-        <img src="/static/img/link.svg" style="width: 30px; height: 15px;" alt="linksvg"><a class="link-secondary"
-          href="#"></a><a class="link-secondary" href="#" style="font-size: 14px;">LinkedIn</a>
-        <a class="btn btn-sm btn-primary" style="margin: auto; display: block; position: inherit; margin-top: 10px;"
-          href="/addblog">Add Blog</a>
+        <img src="/static/img/link.svg" style="width: 30px; height: 15px;" alt="linksvg"><a class="link-secondary" target="_blank" href="{{user_profile.linkedIn_url}}" style="font-size: 14px;">LinkedIn</a>
 
       </div>
     </div>
   </div>
 
-  <div class="main" style="margin-left: 50px; width: 100%;">
+  <div class="main" style="margin-left: 50px; margin-top:10px; width: 100%;">
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-blogs-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
-          role="tab" aria-controls="nav-home" aria-selected="true">Blogs</button>
+          role="tab" aria-controls="nav-home" aria-selected="true">Blogs | <a href="/addblog">
+            <img src="/static/img/add.svg" style="width: 20px; height: 20px;" alt="addblog" id="addblog" role="button">
+          </a></button>
         <button class="nav-link" id="nav-posts-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
           role="tab" aria-controls="nav-profile" aria-selected="false">Posts | <a href="/addpost">
-            <img src="/static/img/add.svg" style="width: 30px; height: 30px;" alt="addpost" id="addpost" role="button">
+            <img src="/static/img/add.svg" style="width: 20px; height: 20px;" alt="addpost" id="addpost" role="button">
           </a></button>
       </div>
     </nav>
+    
+    <form action="/deleteblog" method="post">
+    {% csrf_token %}
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-blogs-tab">
-        <div class="row">
-
+        <div class="row" style="margin-top: 12px;">
           {% if blogs %}
           {% for blog in blogs %}
           <div class="col-md-4">
             <div className="my-2">
-              <div class="card" style="width: 18rem;">
-                <img src="/media/{{blog.blog_img}}" class="card-img-top" alt="..." />
+              <div class="card" style="margin-top: 5px;">
+                <img src="/media/{{blog.blog_img}}" class="card-img-top" alt="..." style="max-height: 186px; min-width: 186px; object-fit: cover;" />
                 <div class="card-body">
-                  <h5 class="card-title">{{blog.title}}</h5>
+                  <h5 class="card-title">{{blog.title}} ({{blog.category}})</h5>
                   <p class="card-text">
-                    {{blog.description}}
+                    {% if blog.description|length > 25 %}
+                      {{blog.description|slice:":25" }}...
+                    {% else %}
+                      {{blog.description}}
+                    {% endif %}
                   </p>
-                  <p>Category: {{blog.category}}</p>
+
                   <a href="/readmore?={{blog.title}}" class="btn btn-sm btn-primary">Read more</a>
+                  {% if request.user.id == user.id %}
+                  <button name="blog_id" value="{{blog.id}}" class="btn btn-sm btn-danger">Delete</button>
+                  {% else %}
+                  {% endif %}
                 </div>
               </div>
             </div>
           </div>
           {% endfor %}
           {% else %}
-            <h5 style="text-align: center; margin-top: 20px;">You haven't uploaded a blog yet!</h5>
+              {% if request.user.id == user.id %}
+              <h5 style="text-align: center; margin-top: 20px;">You haven't uploaded a blog yet!</h5>
+              {% else %}
+              <h5 style="text-align: center; margin-top: 20px;">No blog uploaded yet!</h5>
+              {% endif %}
           {% endif %}
         </div>
+      </form>
 
       </div>
 
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-posts-tab">
-
-        <div class="container" style="margin-top: 12px; ">
+        <div class="row" style="margin-top: 12px;">
           {% if posts %}
           {% for post in posts %}
-          <div class="container bg-light border"
+          <div class="col-md-4">
+            <div className="my-2">
+              <div class="card" id="postCard" style="margin-top: 5px;">
+                <p style="margin-left: 4px;">{{post.title}}</p>
+                <div class="hide" id="postLikes">Likes {{post.total_likes}}</div>
+                <img src="/media/{{post.post_img}}" alt="postimage" id="postimage" class="card-img-top" alt="..." style="width: 100%; height: 100%; bottom: 0px; height: 187px; bottom: 0px;object-fit: cover;">
+              </div>
+            </div>
+          </div>
+          
+            {% endfor %}
+            {% else %}
+              {% if request.user.id == user.id %}
+              <h5 style="text-align: center; margin-top: 20px;">You haven't uploaded a post yet!</h5>
+              {% else %}
+              <h5 style="text-align: center; margin-top: 20px;">No post uploaded yet!</h5>
+              {% endif %}
+            {% endif %}
+          </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock body %}
+
+<!-- <div class="container bg-light border"
             style="background-color: rgb(232, 232, 232); min-width: 45%; max-width: 75%; height: 50%; border-radius: 6px; padding-top: 5px; padding-bottom: 5px; padding-left: 1px; padding-right: 1px; max-height: 100%; float: left; margin-bottom: 5px;">
             <div class="container">
               <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30"
@@ -104,18 +172,4 @@
               <img role="button" src="/static/img/send.svg" style="width: 10%; height: 100%; " alt="sendsvg">
               <p style="display: inline; font-size: 12px; font-size: 12px; margin-left: -2%; margin-right: 6%;">Send</p>
             </div>
-          </div>
-          {% endfor %}
-          {% else %}
-          <h5 style="text-align: center; margin-top: 20px;">You haven't uploaded a post yet!</h5>
-          {% endif %}
-        </div>
-        
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-{% endblock body %}
+          </div> -->

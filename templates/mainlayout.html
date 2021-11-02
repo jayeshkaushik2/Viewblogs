@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
+    {% load static %}
+    <link rel="shortcut icon" href="{%  static '/img/favicon/favicon.ico' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <title>{% block title %} {% endblock title %}</title>
@@ -14,10 +16,11 @@
 
 <body>
     <!-- nav bar is here -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: block; position: fixed; width: 100%;">
+    <!-- style="display: block; position: fixed; width: 100%;" -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
         <div class="container-fluid">
-            <img src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-            <a class="navbar-brand" href="#">Viewblogs</a>
+            <img src="/static/img/logo.jpeg" alt="" width="30" height="fit-content" class="d-inline-block align-text-top">
+            <a class="navbar-brand" style="margin-left: 1%;">Viewblogs</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,17 +33,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/post">Posts</a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="/login_user">Login</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
 
             <div class="btn-group dropstart">
             {% if request.user.is_authenticated %}
 
-                <img src="/static/img/profileimg.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%;" data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            
+                {% if user_profile.user_image %}
+                <img src="/media/{{user_profile.user_image}}" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%; object-fit: cover"; data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                {% else %}
+                <img src="/static/img/default.jpg" alt="@jayeshkaushik2" size="30" height="30" width="30" style="border-radius: 50%; object-fit: cover"; data-view-component="true" class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                {% endif %}
                 <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" style="background: none; color: grey; width: 10px; height: 29px; padding: 0px; border: none;" data-bs-toggle="dropdown" aria-expanded="false"></button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <!-- if user is logged in then show the name else some login button below -->

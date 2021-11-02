@@ -4,7 +4,43 @@
 {% block body %}
 
 <div class="container">
-    
+    <div class="container" >
+        <div class="container mb-5">
+            <form method="post" action="/editprofile" class="form" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-floating mb-3 my-4">
+                    <div class="mb-3">
+                        <label for="profile_img" class="form-label">Upload profile image</label>
+                        <input class="form-control form-control-sm" name="profile_img" id="profile_img" type="file">
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3 my-4">
+                    <input type="text" class="form-control" id="title" value="{{request.user.username}}" name="username" placeholder="username">
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="form-floating mb-3 my-4">
+                    <input type="text" class="form-control" id="linkedIn_url" name="linkedIn_url" placeholder="linkedIn_url">
+                    <label for="linkedIn_url">LinkedIn url</label>
+                </div>
+
+                <div class="form-floating mb-3 my-4">
+                    <input type="text" class="form-control" id="email" value="{{request.user.email}}" name="email" placeholder="email">
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="form-floating mb-3 my-8">
+                    <input class="form-control" placeholder="about" value="{{user_profile.about}}" name="about" id="about"></input>
+                    <label for="about">About</label>
+                </div>
+
+                <button class="btn btn-primary" type="Submit">Add</button>
+            </form>
+        </div>
+
+    </div>
 
 </div>
 

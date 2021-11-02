@@ -15,13 +15,11 @@ class Contact(models.Model):
 
 
 class User_profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     about = models.CharField(max_length=10000000)
     user_image = models.ImageField(upload_to='userimages', default="", null=True)
+    linkedIn_url = models.CharField(max_length=10000, default="")
     followers = models.ManyToManyField(User, related_name='followers', blank=True)
-    
-    def __str__(self):
-        return str(self.user.username)
     
     def total_followers(self):
         return self.followers.count()
